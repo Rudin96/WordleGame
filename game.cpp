@@ -15,10 +15,10 @@ bool Game::compareGuessWithSecret(string& guess)
         return true;
     }
     else {
-        for (size_t i = 0; i < guess.length(); i++)
+        for (size_t i = 0; i < secretWord.length(); i++)
         {
-            size_t charFindPos = secretWord.find(guess[i]);
-            if (charFindPos != std::string::npos && guess[i] != secretWord[i])
+            size_t charFindPos = secretWord.find(secretWord[i]);
+            if (charFindPos != std::string::npos && secretWord[i] != guess[i])
             {
                 std::cout << FOREGROUND(ForegroundColor::Yellow, guess[i]);
             }
@@ -38,6 +38,7 @@ bool Game::compareGuessWithSecret(string& guess)
 void Game::handleUserInput()
 {
     string inputRaw;
+    std::cout << secretWord << std::endl;
     std::cin >> inputRaw;
     for (size_t i = 0; i < inputRaw.size(); i++)
     {
