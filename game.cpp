@@ -8,43 +8,44 @@ void Game::NewGame()
 
 bool Game::compareGuessWithSecret(string& guess)
 {
-    size_t wordFindPos = secretWord.find(guess);
-    if (wordFindPos != std::string::npos)
+    if (secretWord.find(guess) != string::npos)
     {
-        std::cout << FOREGROUND(ForegroundColor::Green, guess) << std::endl;
         return true;
     }
-    else {
-        for (size_t i = 0; i < secretWord.length(); i++)
+    int charOccurence = 0;
+    for (size_t i = 0; i < guess.size(); i++)
+    {
+        if (guess[i] == secretWord[i])
         {
-            size_t charFindPos = secretWord.find(secretWord[i]);
-            if (charFindPos != std::string::npos && secretWord[i] != guess[i])
-            {
-                std::cout << FOREGROUND(ForegroundColor::Yellow, guess[i]);
+            std::cout << FOREGROUND(ForegroundColor::Green, guess[i]);
+            charOccurence++;
+        }
+        else {
+			size_t findPosLeft = secretWord.find_first_of(guess[i], i);
+			size_t findPosRight = secretWord.find_last_of(guess[i], i);
+			if (findPosLeft == string::npos && findPosRight == string::npos || findPosRight < i)
+			{
+				std::cout << guess[i];
             }
-            else if (guess[i] == secretWord[i]) {
-                std::cout << FOREGROUND(ForegroundColor::Green, guess[i]);
-            }
-            else if (charFindPos == std::string::npos) {
-                std::cout << guess[i];
+            else {
+				std::cout << FOREGROUND(ForegroundColor::Yellow, guess[i]);
             }
         }
-        std::cout << std::endl;
-        attempts++;
-        return false;
     }
+    std::cout << std::endl;
+    attempts++;
+    return false;
 }
 
 void Game::handleUserInput()
 {
     string inputRaw;
-    std::cout << secretWord << std::endl;
     std::cin >> inputRaw;
     for (size_t i = 0; i < inputRaw.size(); i++)
     {
         inputRaw[i] = std::toupper(inputRaw[i]);
     }
-    if (attempts > 5)
+    if (attempts > 6)
         handleEndOfGame();
     if (inputRaw.size() != 5)
     {
