@@ -39,7 +39,6 @@ bool Game::compareGuessWithSecret(string& guess)
 void Game::handleUserInput()
 {
     string inputRaw;
-    std::cout << secretWord << std::endl;
     std::cin >> inputRaw;
     for (size_t i = 0; i < inputRaw.size(); i++)
     {
