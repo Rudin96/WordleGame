@@ -12,23 +12,22 @@ bool Game::compareGuessWithSecret(string& guess)
     {
         return true;
     }
-    int charOccurence = 0;
     for (size_t i = 0; i < guess.size(); i++)
     {
         if (guess[i] == secretWord[i])
         {
             std::cout << FOREGROUND(ForegroundColor::Green, guess[i]);
-            charOccurence++;
         }
         else {
-			size_t findPosLeft = secretWord.find_first_of(guess[i], i);
-			size_t findPosRight = secretWord.find_last_of(guess[i], i);
-			if (findPosLeft == string::npos && findPosRight == string::npos || findPosRight < i)
-			{
-				std::cout << guess[i];
+            size_t existsForward = secretWord.find(guess[i], i);
+            size_t existsBackwards = secretWord.find_last_of(guess[i], i);
+            if (existsBackwards == string::npos && existsForward == string::npos)
+            {
+                std::cout << guess[i];
             }
-            else {
-				std::cout << FOREGROUND(ForegroundColor::Yellow, guess[i]);
+            else
+            {
+                std::cout << FOREGROUND(ForegroundColor::Yellow, guess[i]);
             }
         }
     }
@@ -40,6 +39,7 @@ bool Game::compareGuessWithSecret(string& guess)
 void Game::handleUserInput()
 {
     string inputRaw;
+    std::cout << secretWord << std::endl;
     std::cin >> inputRaw;
     for (size_t i = 0; i < inputRaw.size(); i++)
     {
